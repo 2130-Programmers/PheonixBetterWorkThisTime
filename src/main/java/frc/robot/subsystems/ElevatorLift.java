@@ -86,35 +86,35 @@ public class ElevatorLift extends SubsystemBase {
     //that should change the normal operation, and if not, defaults to normal operation.
 
     //Deadzone for controller, disables motors & locks brakes.
-    if(java.lang.Math.abs(RobotContainer.driverJoystick.getRawAxis(5)) < .1) {
+    if(java.lang.Math.abs(RobotContainer.driverJoystick.getRawAxis(5)) < .25) {
       motorPower = 0;
       setBrake("on");
 
     //Checks to see if the elevator is in bottom position & the joystick is in a downward position
     //if so, engages brake and disables motors.
-    }else if (!lowProxRaw.get() && RobotContainer.driverJoystick.getRawAxis(5) > 0) {
+    }else if (!lowProxRaw.get() && RobotContainer.driverJoystick.getRawAxis(5) > .25) {
       motorPower = 0;
       setBrake("on");
     
     //This statement checks to see if elevator is at top & joystick is in upwards position.
     //If so, disables motors and engages brake.
-    } else if (!highProxRaw.get() && RobotContainer.driverJoystick.getRawAxis(5) < 0) {
+    } else if (!highProxRaw.get() && RobotContainer.driverJoystick.getRawAxis(5) < .25) {
       motorPower = 0;
       setBrake("on");
 
     //If the elevator is above 19000 on the encoder, slows down elevator.
-    }else if (elevatorEncoderValue()>=19000 && RobotContainer.driverJoystick.getRawAxis(5)<-.1) {
+    }else if (elevatorEncoderValue()>=19000 && RobotContainer.driverJoystick.getRawAxis(5)<-.25) {
       motorPower=RobotContainer.driverJoystick.getRawAxis(5)*-.4;
       setBrake("off");
 
     //If the encoder value is below 3000, slows down elevator.
-    } else if (elevatorEncoderValue()<=3000 && RobotContainer.driverJoystick.getRawAxis(5)>.1) {
-      motorPower = .2;
+    } else if (elevatorEncoderValue()<=1000 && RobotContainer.driverJoystick.getRawAxis(5)>.25) {
+      motorPower = 0;
       setBrake("off");
 
     //If the robot is not at top or bottom, and the joystick is in a downwards position,
     //engages a modifier method.
-    } else if (RobotContainer.driverJoystick.getRawAxis(5) > .1) {
+    } else if (RobotContainer.driverJoystick.getRawAxis(5) > .25) {
       motorPower = downThrottlePower();
       setBrake("off");
 
