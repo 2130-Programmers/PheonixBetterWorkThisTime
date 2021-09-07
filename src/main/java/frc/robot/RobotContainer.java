@@ -25,6 +25,7 @@ public class RobotContainer {
   public final static IntakeSub intakeSub = new IntakeSub();
   public final static ClawSub clawSub = new ClawSub();
   public final static HandlerSolSub handlerSolSub = new HandlerSolSub();
+  public final static ElevatorLift elevatorLift = new ElevatorLift();
   
   public final static ExtendoCommand extendoCommand = new ExtendoCommand(intakeSub);
   public final static RollersLower rollerLower = new RollersLower(clawSub);
@@ -37,6 +38,7 @@ public class RobotContainer {
   public final static PlaceCommand placeCommand = new PlaceCommand(handlerSolSub);
   public final static SuckIn suckIn = new SuckIn(intakeSub);
   public final static SafelyDrop safelyDrop = new SafelyDrop(clawSub, intakeSub);
+  public final static ElevatorAnalogueController elevatorAnalogueController = new ElevatorAnalogueController(elevatorLift);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -56,6 +58,7 @@ public class RobotContainer {
     configureButtonBindings();
     driveTrainSub.setDefaultCommand(driveDifferentially);
     intakeSub.setDefaultCommand(intakeCommand);
+    elevatorLift.setDefaultCommand(elevatorAnalogueController);
   }
 
   /**

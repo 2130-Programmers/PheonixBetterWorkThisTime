@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ElevatorAnalogueController;
 import frc.robot.commands.ShiftToLow;
 
 /**
@@ -82,11 +84,14 @@ public class Robot extends TimedRobot {
     RobotContainer.intakeSub.handlerPositionBackward();
     RobotContainer.clawSub.raiseClaw(); 
     RobotContainer.handlerSolSub.placerOut();
+    RobotContainer.elevatorLift.resetElevatorEncoder();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putNumber("ElevatorEncoderValue", RobotContainer.elevatorLift.elevatorEncoderValue());
+  }
 
   @Override
   public void testInit() {
