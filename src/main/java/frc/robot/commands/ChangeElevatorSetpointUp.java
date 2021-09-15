@@ -6,29 +6,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.ElevatorLift;
+import frc.robot.subsystems.PIDelevator;
 
-
-public class ElevatorAnalogueController extends CommandBase {
-
-  private ElevatorLift elevatorLift;
-
-  /** Creates a new ElevatorAnalogueControll. */
-  public ElevatorAnalogueController(ElevatorLift tempsub) {
-    elevatorLift = tempsub;
-    addRequirements(tempsub);
-    // Use addRequirements() here to declare subsystem dependencies.
+public class ChangeElevatorSetpointUp extends CommandBase {
+  /** Creates a new ChangeElevatorSetpointUp. */
+  public PIDelevator PIDelevator;
+  public ChangeElevatorSetpointUp(PIDelevator PIDelevator) {
+    this.PIDelevator = PIDelevator;
+    addRequirements(this.PIDelevator);
   }
+
+  boolean done;
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {done = false;}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.elevatorLift.elevatorControl();
+
+    if(RobotContainer.pidelevator.setpointID < 2) {
+    RobotContainer.pidelevator.setpointID++;
+    }
+    done = true;
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +39,6 @@ public class ElevatorAnalogueController extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return done;
   }
 }

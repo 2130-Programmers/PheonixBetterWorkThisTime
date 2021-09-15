@@ -125,11 +125,14 @@ public class ElevatorLift extends SubsystemBase {
     }
 
     elevatorControllerMaster.set(motorPower*-1);
-    elevatorControllerSlave.set(motorPower*-1);
   }
-  
+
   // Methods to send values to driverstation. Just inverting the raw input from
   // proxes and converting to bool
+
+  public void setSlave() {
+    elevatorControllerSlave.follow(elevatorControllerMaster);
+  }
 
   public boolean lowProxDetect() {
     return !lowProxRaw.get();

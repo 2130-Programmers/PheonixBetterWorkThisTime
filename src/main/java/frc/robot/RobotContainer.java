@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -19,14 +20,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+
+  //Subsystems
   public final static DriveTrainSub driveTrainSub = new DriveTrainSub();
   public final static ShiftingSubsystem shiftingSubsystem = new ShiftingSubsystem();
   public final static IntakeSub intakeSub = new IntakeSub();
   public final static ClawSub clawSub = new ClawSub();
   public final static HandlerSolSub handlerSolSub = new HandlerSolSub();
   public final static ElevatorLift elevatorLift = new ElevatorLift();
-  
+
+  //Commands
   public final static ExtendoCommand extendoCommand = new ExtendoCommand(intakeSub);
   public final static RollersLower rollerLower = new RollersLower(clawSub);
   public final static RollersRaise rollerRaise = new RollersRaise(clawSub);
@@ -38,13 +41,24 @@ public class RobotContainer {
   public final static PlaceCommand placeCommand = new PlaceCommand(handlerSolSub);
   public final static SuckIn suckIn = new SuckIn(intakeSub);
   public final static SafelyDrop safelyDrop = new SafelyDrop(clawSub, intakeSub);
-  public final static ElevatorAnalogueController elevatorAnalogueController = new ElevatorAnalogueController(elevatorLift);
+    
+  //PIDs
+  //Subsystem
+  public final static PIDelevator pidelevator = new PIDelevator();
+  //Command
+  public final static PIDcontroller pidcontroller = new PIDcontroller(pidelevator);
+  public final static ChangeElevatorSetpointDown changeElevatorSetpointDown = new ChangeElevatorSetpointDown(pidelevator);
+  public final static ChangeElevatorSetpointUp changeElevatorSetpointUp = new ChangeElevatorSetpointUp(pidelevator);
+  public final static ToggleElevatorControllMode toggleElevatorControllMode = new ToggleElevatorControllMode(pidelevator);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
  
     public final static Joystick driverJoystick = new Joystick(0);
     public final static JoystickButton shiftButton = new JoystickButton(driverJoystick, Constants.driverButtonStart);
+    public final static JoystickButton changeSetpointUp = new JoystickButton(driverJoystick, Constants.driverButtonRB);
+    public final static JoystickButton changeSetpointDown = new JoystickButton(driverJoystick, Constants.driverButtonLB);
+    public final static JoystickButton toggleControllMode = new JoystickButton(driverJoystick, Constants.driverButtonBack);
     public final static JoystickButton handlerButton = new JoystickButton(driverJoystick, Constants.driverButtonX);
     public final static JoystickButton lowerClawBut = new JoystickButton(driverJoystick, Constants.driverButtonA);
     public final static JoystickButton raiseClawBut = new JoystickButton(driverJoystick, Constants.driverButtonB);
@@ -58,7 +72,7 @@ public class RobotContainer {
     configureButtonBindings();
     driveTrainSub.setDefaultCommand(driveDifferentially);
     intakeSub.setDefaultCommand(intakeCommand);
-    elevatorLift.setDefaultCommand(elevatorAnalogueController);
+    pidelevator.setDefaultCommand(pidcontroller);
   }
 
   /**
@@ -74,6 +88,10 @@ public class RobotContainer {
     placerButton.whenPressed(placeCommand);
     extendButton.whenPressed(extendoCommand);
     bustDown.whenPressed(safelyDrop);
+    changeSetpointUp.whenPressed(changeElevatorSetpointUp);
+    changeSetpointDown.whenPressed(changeElevatorSetpointDown);
+    toggleControllMode.whenPressed(toggleElevatorControllMode);
+    
   }
 
   //eat my shorts Brodiey
